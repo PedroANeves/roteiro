@@ -42,6 +42,10 @@ unittest: $(VENV) # pytest.
 	$(BIN)/pytest tests/
 	# @open htmlcov/index.html
 
+.PHONY: run-local
+run-local: clean test # runs locally.
+	$(BIN)/python src/roteiro.py
+
 ###############################################################################
 # build (TODO)
 ###############################################################################
@@ -51,9 +55,18 @@ clean: # remove caches and other generated temp files.
 	find . -type f -name *.pyc -delete
 	find . -type d -name __pycache__ -delete
 	find . -type f -name db.sqlite3 -delete
-	find . -type d -name .mypy_cache -delete
-	find . -type d -name .pytest_cache -delete
-	find . -type d -name htmlcov -delete
+	find . -type d -name .mypy_cache -exec rm -r {} +
+	find . -type d -name .pytest_cache -exec rm -r {} +
+	find . -type d -name htmlcov -exec rm -r {} +
+	find . -type d -name dist -exec rm -r {} +
+
+.PHONY: build
+build: clean test # builds executable.
+	$(BIN)/pyinstaller src/roteiro.py
+
+.PHONY: run
+run: build # runs executable.
+	dist/roteiro/roteiro
 
 ###############################################################################
 # deploy (TODO)

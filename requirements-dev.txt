@@ -7,3 +7,4 @@ mypy  # typechecking
 pytest  # unit testing
 pytest-cov  # test coverage
 pytest-reverse  # allows reversing test order, nearly as effective as randomization
+pyinstaller  # building executables
