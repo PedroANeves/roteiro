@@ -32,3 +32,6 @@ branch = true
 omit = [
     "*/tests/*",
 ]
+
+[tool.pylint]
+disable=["missing-function-docstring", "missing-module-docstring"]
