@@ -1,0 +1,46 @@
+{
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    "editor.detectIndentation": false,
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll": "explicit",
+        "source.organizeImports": "explicit"
+    },
+    "editor.rulers": [
+        80,
+        120,
+    ],
+    "files.eol": "\n",
+    "[python]": {
+        // black
+        "editor.defaultFormatter": "ms-python.black-formatter",
+    },
+    // black
+    "black-formatter.args": [
+        "--config=pyproject.toml"
+    ],
+    "black-formatter.importStrategy": "fromEnvironment",
+    // mypy
+    "mypy-type-checker.args": [
+        "--config-file=pyproject.toml",
+        "--cache-dir=.mypy_cache/.vscode",
+    ],
+    "mypy-type-checker.importStrategy": "fromEnvironment",
+    // isort
+    "isort.importStrategy": "fromEnvironment",
+    "isort.args": [
+        "--settings-path",
+        "${workspaceFolder}/pyproject.toml"
+    ],
+    // tests
+    "python.testing.pytestEnabled": true,
+    "python.testing.cwd": "${workspaceFolder}",
+    "python.testing.pytestArgs": [
+        "."
+    ],
+    "[yaml]": {
+        "editor.tabSize": 2,
+    },
+    "python.testing.unittestEnabled": false,
+}
