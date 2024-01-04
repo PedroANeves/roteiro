@@ -12,6 +12,7 @@ profile = "black"
 sections = ['FUTURE', 'STDLIB', 'THIRDPARTY', 'FIRSTPARTY', 'LOCALFOLDER']
 src_paths = ["src"]
 include_trailing_comma = true
+float_to_top = true
 
 [tool.flake8]
 max-line-length = 80
