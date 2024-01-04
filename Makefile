@@ -62,7 +62,7 @@ clean: # remove caches and other generated temp files.
 
 .PHONY: build
 build: clean test # builds executable.
-	$(BIN)/pyinstaller src/roteiro.py
+	$(BIN)/pyinstaller --onefile src/roteiro.py
 
 .PHONY: run
 run: build # runs executable.
