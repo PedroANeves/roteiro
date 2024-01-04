@@ -25,9 +25,9 @@ jobs:
         with:
           python-version: '3.10.x'
 
-      # - name: Install Dependencies
-      #   run: |
-      #     pip install -r requirements-dev.txt
+      - name: Extract Version
+        id: extract_version
+        run: echo "::set-output name=version::$(grep 'VERSION=' src/__version__.py | cut -d'"' -f2)"
 
       - name: Build Installer
         run: |
@@ -38,4 +38,33 @@ jobs:
         with:
           name: executable
           path: dist/roteiro/roteiro*
-  
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10.x'
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ steps.extract_version.outputs.version }}
+          release_name: Release ${{ steps.extract_version.outputs.version }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Artifacts
+        id: upload-release-artifacts
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: dist/roteiro/roteiro*
+          asset_name: roteiro*
+          asset_content_type: application/octet-stream
