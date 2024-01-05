@@ -6,6 +6,8 @@ from tkinter import filedialog
 
 import docx  # type: ignore
 
+from __version__ import VERSION
+
 ROTEIRO_LINE = r"^(?P<start>\d{4})\t(?P<description>.*?)(?:\t(?P<end>\d{4}))?$"
 
 
@@ -134,7 +136,7 @@ def gui():
         root.update()
 
     root = tk.Tk()
-    root.title("Roteiro Extractor")
+    root.title(f"Roteiro Extractor - {VERSION}")
     root.config(bg="#2E2E2E")
 
     # pick button
