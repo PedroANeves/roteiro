@@ -18,6 +18,7 @@
 
 ### changed
 - defaults to gui tk interface instead of cli
+- build result packed into single file
 
 ### removed
 - failing gh actions builds
