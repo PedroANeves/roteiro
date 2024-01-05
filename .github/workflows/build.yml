@@ -1,71 +1,71 @@
-name: Build Releases
+# name: Build Releases
 
-on:
-  push:
-    branches:
-      - master
-  pull_request:
-    branches:
-      - master
+# on:
+#   push:
+#     branches:
+#       - master
+#   pull_request:
+#     branches:
+#       - master
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        os: [windows-latest, macos-latest, ubuntu-latest]
+#     strategy:
+#       matrix:
+#         os: [windows-latest, macos-latest, ubuntu-latest]
 
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
+#     steps:
+#       - name: Checkout Repository
+#         uses: actions/checkout@v2
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.10.x'
+#       - name: Set up Python
+#         uses: actions/setup-python@v2
+#         with:
+#           python-version: '3.10.x'
 
-      - name: Extract Version
-        id: extract_version
-        run: echo "::set-output name=version::$(grep 'VERSION=' src/__version__.py | cut -d'"' -f2)"
+#       - name: Extract Version
+#         id: extract_version
+#         run: echo "::set-output name=version::$(grep 'VERSION=' src/__version__.py | cut -d'"' -f2)"
 
-      - name: Build Installer
-        run: |
-          make build
+#       - name: Build Installer
+#         run: |
+#           make build
 
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: executable
-          path: dist/roteiro/roteiro*
+#       - name: Upload Artifacts
+#         uses: actions/upload-artifact@v2
+#         with:
+#           name: executable
+#           path: dist/roteiro/roteiro*
 
-  release:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
+#   release:
+#     needs: build
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout Repository
+#         uses: actions/checkout@v2
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.10.x'
+#       - name: Set up Python
+#         uses: actions/setup-python@v2
+#         with:
+#           python-version: '3.10.x'
 
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        with:
-          tag_name: ${{ steps.extract_version.outputs.version }}
-          release_name: Release ${{ steps.extract_version.outputs.version }}
-          draft: false
-          prerelease: false
+#       - name: Create Release
+#         id: create_release
+#         uses: actions/create-release@v1
+#         with:
+#           tag_name: ${{ steps.extract_version.outputs.version }}
+#           release_name: Release ${{ steps.extract_version.outputs.version }}
+#           draft: false
+#           prerelease: false
 
-      - name: Upload Release Artifacts
-        id: upload-release-artifacts
-        uses: actions/upload-release-asset@v1
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: dist/roteiro/roteiro*
-          asset_name: roteiro*
-          asset_content_type: application/octet-stream
-          token: ${{ secrets.GITHUB_TOKEN }}
+#       - name: Upload Release Artifacts
+#         id: upload-release-artifacts
+#         uses: actions/upload-release-asset@v1
+#         with:
+#           upload_url: ${{ steps.create_release.outputs.upload_url }}
+#           asset_path: dist/roteiro/roteiro*
+#           asset_name: roteiro*
+#           asset_content_type: application/octet-stream
+#           token: ${{ secrets.GITHUB_TOKEN }}

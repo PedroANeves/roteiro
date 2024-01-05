@@ -20,4 +20,5 @@
 - defaults to gui tk interface instead of cli
 
 ### removed
+- failing gh actions builds
 - cli interface
