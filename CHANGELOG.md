@@ -15,6 +15,9 @@
 - changelog
 - versioning
 - tk gui
+- flake8 linting gh actions
+- black formating gh actions
+- test badge on readme
 
 ### changed
 - defaults to gui tk interface instead of cli
