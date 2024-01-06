@@ -5,6 +5,7 @@
 ### added
 
 ### changed
+- make run does not rebuild
 
 ### removed
 

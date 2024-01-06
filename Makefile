@@ -65,8 +65,8 @@ build: clean test # builds executable.
 	$(BIN)/pyinstaller --onefile src/roteiro.py
 
 .PHONY: run
-run: build # runs executable.
-	dist/roteiro/roteiro
+run: dist/roteiro # runs executable.
+	dist/roteiro
 
 ###############################################################################
 # deploy (TODO)
