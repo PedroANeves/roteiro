@@ -1,5 +1,7 @@
 # roteiro
+[![lint](https://github.com/PedroANeves/roteiro/actions/workflows/lint.yml/badge.svg)](https://github.com/PedroANeves/roteiro/actions/workflows/lint.yml)
 [![test](https://github.com/PedroANeves/roteiro/actions/workflows/test.yml/badge.svg)](https://github.com/PedroANeves/roteiro/actions/workflows/test.yml)
+[![build](https://github.com/PedroANeves/roteiro/actions/workflows/build.yml/badge.svg)](https://github.com/PedroANeves/roteiro/actions/workflows/build.yml)
 
 scrapes docx for roteiro timestamps and outputs a table.
 

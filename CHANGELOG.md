@@ -5,6 +5,7 @@
 ### added
 - separate lint yml(flake8 black mypy) from test yml(pytest)
 - xml code coverage
+- lint and build badges
 
 ### changed
 - fix make run executable path
