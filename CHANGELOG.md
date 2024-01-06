@@ -7,6 +7,7 @@
 - cicd linux build artifact
 - xml code coverage
 - lint and build badges
+- windows version
 
 ### changed
 - fix make run executable path
