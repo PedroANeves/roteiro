@@ -21,8 +21,15 @@ jobs:
         id: extract_version
         run: echo "::set-output name=version::$(grep 'VERSION = ' src/__version__.py | cut -d'"' -f2)"
 
+      - name: install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+  
       - name: build execultable
-        run: pyinstaller --onefile src/roteiro.py
+        run: |
+          pip install pyinstaller
+          pyinstaller --onefile src/roteiro.py
 
       - name: upload execultable
         uses: actions/upload-artifact@v4
