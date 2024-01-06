@@ -5,6 +5,7 @@
 ### added
 
 ### changed
+- fix make run executable path
 - make run does not rebuild
 
 ### removed

@@ -42,12 +42,8 @@ unittest: $(VENV) # pytest.
 	$(BIN)/pytest tests/
 	# @open htmlcov/index.html
 
-.PHONY: run-local
-run-local: clean test # runs locally.
-	$(BIN)/python src/roteiro.py
-
 ###############################################################################
-# build (TODO)
+# build
 ###############################################################################
 .PHONY: clean
 clean: # remove caches and other generated temp files.
@@ -61,12 +57,19 @@ clean: # remove caches and other generated temp files.
 	find . -type d -name dist -exec rm -r {} +
 
 .PHONY: build
-build: clean test # builds executable.
+build: clean test # builds executable using pyinstaller for the local machine.
 	$(BIN)/pyinstaller --onefile src/roteiro.py
 
+###############################################################################
+# run
+###############################################################################
 .PHONY: run
 run: dist/roteiro # runs executable.
 	dist/roteiro
+
+.PHONY: run-local
+run-local: clean test # runs locally.
+	$(BIN)/python src/roteiro.py
 
 ###############################################################################
 # deploy (TODO)
