@@ -16,6 +16,7 @@
 - code refactor
 - updated cicd steps versions to stable
 - fix cicd depreciated option
+- optimized linux build
 
 ### removed
 

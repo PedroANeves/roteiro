@@ -58,7 +58,7 @@ clean: # remove caches and other generated temp files.
 
 .PHONY: build
 build: clean test # builds executable using pyinstaller for the local machine.
-	$(BIN)/pyinstaller --onefile src/roteiro.py
+	$(BIN)/pyinstaller --strip --onefile src/roteiro.py
 
 ###############################################################################
 # run
