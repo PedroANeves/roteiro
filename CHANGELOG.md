@@ -14,6 +14,7 @@
 - reenable cli interface by booting with '--cli' flag
 - code refactor
 - updated cicd steps versions to stable
+- fix cicd depreciated option
 
 ### removed
 

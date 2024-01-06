@@ -19,7 +19,7 @@ jobs:
 
       - name: extract version
         id: extract_version
-        run: echo "::set-output name=version::$(grep 'VERSION = ' src/__version__.py | cut -d'"' -f2)"
+        run: echo "version=$(grep 'VERSION = ' src/__version__.py | cut -d'"' -f2)" >> $GITHUB_OUTPUT
 
       - name: install dependencies
         run: |
