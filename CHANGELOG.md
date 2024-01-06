@@ -4,12 +4,14 @@
 
 ### added
 - separate lint yml(flake8 black mypy) from test yml(pytest)
+- cicd linux build artifact
 - xml code coverage
 - lint and build badges
 
 ### changed
 - fix make run executable path
 - make run does not rebuild
+- updated cicd steps versions to stable
 
 ### removed
 
