@@ -2,11 +2,10 @@ name: Build Releases
 
 on:
   push:
-    branches:
-      - master
-  pull_request:
-    branches:
-      - master
+    tags:
+      - 'v*':
+        branches:
+          - master
 
 jobs:
   build:
@@ -38,7 +37,7 @@ jobs:
           path: dist/roteiro
 
   build-win:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -47,7 +46,7 @@ jobs:
 
       - name: extract version
         id: extract_version
-        run: echo "version=$(grep 'VERSION = ' src/__version__.py | cut -d\" -f2)" >> $GITHUB_OUTPUT
+        run: echo "version=$(grep 'VERSION = ' src/__version__.py | cut -d'"' -f2)" >> $GITHUB_OUTPUT
 
       - name: Package Application
         uses: JackMcKew/pyinstaller-action-windows@main
