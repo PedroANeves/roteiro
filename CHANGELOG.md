@@ -11,6 +11,8 @@
 ### changed
 - fix make run executable path
 - make run does not rebuild
+- reenable cli interface by booting with '--cli' flag
+- code refactor
 - updated cicd steps versions to stable
 
 ### removed
