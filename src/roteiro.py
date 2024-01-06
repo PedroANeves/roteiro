@@ -1,13 +1,18 @@
+from __future__ import annotations
+
 import re
+import sys
 import tkinter as tk
 from datetime import timedelta
 from os import path
 from tkinter import filedialog
+from typing import Callable
 
 import docx  # type: ignore
 
 from __version__ import VERSION
 
+# DDDD<tab>Description[<tab>DDDD]
 ROTEIRO_LINE = r"^(?P<start>\d{4})\t(?P<description>.*?)(?:\t(?P<end>\d{4}))?$"
 
 
@@ -103,66 +108,91 @@ def get_markers(filename):
     return values
 
 
-def cli():
-    filename = input("filepath for .docx: ")
-    filename = filename.strip()
-    filename = filename.strip("'")
+def cli(markers_strategy: Callable, version: str):
+    def _sanitize_filepath(filename_raw):
+        return filename_raw.strip().strip("'")
+
+    print(f"Roteiro Extractor - {version}")
+
+    filename = _sanitize_filepath(input("enter filepath for .docx: "))
+
     if not path.isfile(filename):
         print(f"'{filename}' is not a file")
         return 1
 
-    markers = get_markers(filename)
+    markers = markers_strategy(filename)
+
     for marker in markers:
         print(marker)
 
     return 0
 
 
-def gui():
-    def pick_file():
+def gui(markers_strategy: Callable, version: str):
+    bg_color = "#2E2E2E"
+    fg_color = "white"
+
+    def _pick_file():
         filename = filedialog.askopenfilename()
 
-        markers = get_markers(filename)
+        markers = markers_strategy(filename)
 
         file_contents = "\n".join(markers)
-
         text_display.delete(1.0, tk.END)
-        text_display.insert(tk.END, file_contents)  # Insert the file contents
+        text_display.insert(tk.END, file_contents)
 
-    def copy_all():
+    def _copy_all():
         all_text = text_display.get(1.0, tk.END)
         root.clipboard_clear()
         root.clipboard_append(all_text)
         root.update()
 
     root = tk.Tk()
-    root.title(f"Roteiro Extractor - {VERSION}")
-    root.config(bg="#2E2E2E")
+    root.title(f"Roteiro Extractor - {version}")
+    root.config(bg=bg_color)
 
     # pick button
     pick_button = tk.Button(
-        root, text="Pick the .docx", command=pick_file, bg="#404040", fg="white"
+        root,
+        text="Pick the .docx",
+        command=_pick_file,
+        bg=bg_color,
+        fg=fg_color,
     )
     pick_button.pack(pady=10)
 
     # marker display
     text_display = tk.Text(
-        root, wrap=tk.WORD, bg="#2E2E2E", fg="white", insertbackground="white"
+        root,
+        wrap=tk.WORD,
+        bg=bg_color,
+        fg=fg_color,
+        insertbackground=fg_color,
     )
     text_display.pack(expand=True, fill=tk.BOTH)
 
     # copy button
     copy_button = tk.Button(
-        root, text="Copy All", command=copy_all, bg="#404040", fg="white"
+        root,
+        text="Copy All",
+        command=_copy_all,
+        bg=bg_color,
+        fg=fg_color,
     )
     copy_button.pack(pady=10)
 
-    # run
     root.mainloop()
+
+    return 0
 
 
 def main():
-    gui()
+    if "--cli" in sys.argv:
+        ui = cli
+    else:
+        ui = gui
+
+    ui(get_markers, VERSION)
 
 
 if __name__ == "__main__":
