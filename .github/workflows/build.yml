@@ -47,7 +47,7 @@ jobs:
 
       - name: extract version
         id: extract_version
-        run: echo "version=$(grep 'VERSION = ' src/__version__.py | cut -d'\"' -f2)" >> $GITHUB_OUTPUT
+        run: echo "version=$(grep 'VERSION = ' src/__version__.py | cut -d\" -f2)" >> $GITHUB_OUTPUT
 
       - name: Package Application
         uses: JackMcKew/pyinstaller-action-windows@main
