@@ -147,6 +147,19 @@ def gui(markers_strategy: Callable, version: str):
         root.clipboard_append(all_text)
         root.update()
 
+    def _save_tsv():
+        f = filedialog.asksaveasfile(
+            mode="w",
+            defaultextension=".tsv",
+            initialfile="Markers",
+            filetypes=(("tsv", "*.tsv"),),
+        )
+        if f is None:  # user hit 'cancel'
+            return
+        text2save = text_display.get(1.0, tk.END)
+        f.write(text2save)
+        f.close()
+
     root = tk.Tk()
     root.title(f"Roteiro Extractor - {version}")
     root.config(bg=bg_color)
@@ -180,6 +193,16 @@ def gui(markers_strategy: Callable, version: str):
         fg=fg_color,
     )
     copy_button.pack(pady=10)
+
+    # save button
+    save_button = tk.Button(
+        root,
+        text="Save .tsv",
+        command=_save_tsv,
+        bg=bg_color,
+        fg=fg_color,
+    )
+    save_button.pack(pady=10)
 
     root.mainloop()
 

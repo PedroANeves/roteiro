@@ -3,6 +3,14 @@
 ## unreleased
 
 ### added
+### changed
+### removed
+
+## 0.2.0
+2024/01/06
+
+### added
+- save as .tsv button
 - separate lint yml(flake8 black mypy) from test yml(pytest)
 - cicd linux build artifact
 - xml code coverage
