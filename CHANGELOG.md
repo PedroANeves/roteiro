@@ -3,6 +3,7 @@
 ## unreleased
 
 ### added
+- separate lint yml(flake8 black mypy) from test yml(pytest)
 
 ### changed
 - fix make run executable path
