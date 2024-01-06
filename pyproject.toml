@@ -24,7 +24,7 @@ mypy_path = "$MYPY_CONFIG_FILE_DIR/src"
 
 [tool.pytest.ini_options]
 pythonpath = "src"
-addopts = "--cov=src/ --cov-report=term --cov-report=html"
+addopts = "--cov=src/ --cov-report=term --cov-report=html --cov-report=xml"
 python_files = ["tests.py", "test_*.py", "*_test.py", "tests/*.py"]
 
 [tool.coverage.run]
