@@ -67,11 +67,11 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: roteiro_linux
-          path: $GITHUB_WORKSPACE/build
+          path: build/linux
     
       - run: find ~+ -type f -name '*roteiro*'
       - run: ls -la /home/runner/work/roteiro/roteiro
-      - run: file /home/runner/work/roteiro/roteiro
+      - run: tree -I '.git'
 
     #   - name: download windows build
     #     uses: actions/download-artifact@v4
