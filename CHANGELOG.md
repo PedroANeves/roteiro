@@ -6,6 +6,7 @@
 ### changed
 ### removed
 
+- typing improvements
 - spellchecking
 
 ### changed

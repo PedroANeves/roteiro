@@ -42,7 +42,7 @@ def extract_timestamp_or_none(
 
 
 def format_timestamp(
-    start: str, description: str, end: str
+    start: str, description: str, end: str | None
 ) -> tuple[str, timedelta, timedelta, str]:
     name = start
 
@@ -88,7 +88,7 @@ def format_line(name: str, start: str, duration: str, description: str) -> str:
     )
 
 
-def get_markers(filename):
+def get_markers(filename: str) -> list[str]:
     lines = extract_lines(filename)
 
     values = []
@@ -135,7 +135,7 @@ def cli(markers_strategy: Callable):
     return 0
 
 
-def gui(markers_strategy: Callable, version: str):
+def gui(markers_strategy: Callable):
     bg_color = "#2E2E2E"
     fg_color = "white"
 
