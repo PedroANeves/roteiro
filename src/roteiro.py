@@ -73,7 +73,6 @@ def format_timedelta(delta: timedelta) -> str:
 
 
 def format_line(name: str, start: str, duration: str, description: str) -> str:
-    sep = ","
     sep = "\t"
 
     time_format = "decimal"
