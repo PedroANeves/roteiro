@@ -67,6 +67,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: roteiro_linux
+          path: $GITHUB_WORKSPACE/build
     
       - run: find ~+ -type f -name '*roteiro*'
       - run: ls -la /home/runner/work/roteiro/roteiro
