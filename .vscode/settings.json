@@ -43,4 +43,14 @@
         "editor.tabSize": 2,
     },
     "python.testing.unittestEnabled": false,
+    "cSpell.words": [
+        "cicd",
+        "initialfile",
+        "insertbackground",
+        "mypy",
+        "pady",
+        "pytest",
+        "roteiro",
+        "Subclip"
+    ],
 }
