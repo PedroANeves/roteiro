@@ -3,6 +3,7 @@ name: Build Releases
 on:
   push:
     tags: ['v*']
+    branches: ['cicd']
   workflow_dispatch:
 
 jobs:
@@ -30,31 +31,32 @@ jobs:
           name: roteiro_linux
           path: dist/roteiro
 
-  build-win:
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.10.x'
+  # build-win:
+  #   runs-on: windows-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: actions/setup-python@v5
+  #       with:
+  #         python-version: '3.10.x'
 
-      - name: install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+  #     - name: install dependencies
+  #       run: |
+  #         python -m pip install --upgrade pip
+  #         pip install -r requirements.txt
   
-      - name: build execultable
-        run: |
-          pip install pyinstaller
-          pyinstaller --onefile src/roteiro.py
+  #     - name: build execultable
+  #       run: |
+  #         pip install pyinstaller
+  #         pyinstaller --onefile src/roteiro.py
 
-      - uses: actions/upload-artifact@v4
-        with:
-          name: roteiro_win
-          path: dist/roteiro.exe
+  #     - uses: actions/upload-artifact@v4
+  #       with:
+  #         name: roteiro_win
+  #         path: dist/roteiro.exe
 
   release:
-    needs: [build, build-win]
+    # needs: [build, build-win]
+    needs: [build]
     runs-on: ubuntu-latest
     permissions:
         contents: write
@@ -66,7 +68,9 @@ jobs:
         with:
           name: roteiro_linux
     
-      - run: find -name '*roteiro*'
+      - run: find ~+ -type f -name '*roteiro*'
+      - run: ls -la /home/runner/work/roteiro/roteiro
+      - run: file /home/runner/work/roteiro/roteiro
 
     #   - name: download windows build
     #     uses: actions/download-artifact@v4
