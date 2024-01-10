@@ -79,7 +79,7 @@ jobs:
         run: |
           version=$(cat src/__version__.py | cut -d\" -f 2)
           sed -n "/^## $version$/,/^## [0-9]/p" CHANGELOG.md | sed -n '$!p' \
-          | sed 's/## /# / > RELEASE.md'
+          | sed 's/## /# /' > RELEASE.md
 
       - uses: ncipollo/release-action@v1
         with:
