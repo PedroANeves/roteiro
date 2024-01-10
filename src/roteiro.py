@@ -13,7 +13,9 @@ import docx  # type: ignore
 from __version__ import VERSION
 
 # DDDD<tab>Description[<tab>DDDD]
-ROTEIRO_LINE = r"^(?P<start>\d{4})\t(?P<description>.*?)(?:\t(?P<end>\d{4}))?$"
+ROTEIRO_TIMESTAMP_FORMAT = (
+    r"^(?P<start>\d{4})\t(?P<description>.*?)(?:\t(?P<end>\d{4}))?$"
+)
 
 
 def extract_lines(filename: str) -> list[str]:
@@ -22,8 +24,7 @@ def extract_lines(filename: str) -> list[str]:
     return lines
 
 
-def extract_timestamp(string: str) -> tuple[str, str, str | None]:
-    m = re.match(ROTEIRO_LINE, string)
+    m = re.match(ROTEIRO_TIMESTAMP_FORMAT, string)
     if not m:
         raise ValueError()
 
@@ -71,12 +72,15 @@ def format_timedelta(delta: timedelta) -> str:
 def format_line(name: str, start: str, duration: str, description: str) -> str:
     sep = ","
     sep = "\t"
+
+    time_format = "decimal"
+    range_export_format = "Subclip"
     return (
         f"{name}{sep}"
         f"{start}{sep}"
         f"{duration}{sep}"
-        f"decimal{sep}"
-        f"Subclip{sep}"
+        f"{time_format}{sep}"
+        f"{range_export_format}{sep}"
         f"{description}"
     )
 
@@ -108,13 +112,14 @@ def get_markers(filename):
     return values
 
 
-def cli(markers_strategy: Callable, version: str):
-    def _sanitize_filepath(filename_raw):
-        return filename_raw.strip().strip("'")
+TITLE = f"Roteiro Extractor - {VERSION}"
 
-    print(f"Roteiro Extractor - {version}")
 
-    filename = _sanitize_filepath(input("enter filepath for .docx: "))
+def cli(markers_strategy: Callable):
+    print(TITLE)
+
+    filename_raw = input("enter filepath for .docx: ")
+    filename = filename_raw.strip().strip("'")
 
     if not path.isfile(filename):
         print(f"'{filename}' is not a file")
@@ -154,14 +159,16 @@ def gui(markers_strategy: Callable, version: str):
             initialfile="Markers",
             filetypes=(("tsv", "*.tsv"),),
         )
-        if f is None:  # user hit 'cancel'
+
+        if not f:  # user hit 'cancel' or closed dialog
             return
+
         text2save = text_display.get(1.0, tk.END)
         f.write(text2save)
         f.close()
 
     root = tk.Tk()
-    root.title(f"Roteiro Extractor - {version}")
+    root.title(TITLE)
     root.config(bg=bg_color)
 
     # pick button
@@ -215,7 +222,7 @@ def main():
     else:
         ui = gui
 
-    ui(get_markers, VERSION)
+    ui(get_markers)
 
 
 if __name__ == "__main__":
