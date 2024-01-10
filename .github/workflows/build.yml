@@ -68,20 +68,24 @@ jobs:
         with:
           name: roteiro_linux
           path: build/linux
-    
-      # - run: find ~+ -type f -name '*roteiro*'
-      - run: ls -la /home/runner/work/roteiro/roteiro/build/linux/roteiro
-      - run: file /home/runner/work/roteiro/roteiro/build/linux/roteiro
-      # - run: tree -I '.git'
 
       # - name: download windows build
       #   uses: actions/download-artifact@v4
       #   with:
       #     name: roteiro_win
-  
+      #     path: build/windows
+
+      - name: generate release body
+        run: |
+          version=$(cat src/__version__.py | cut -d\" -f 2)
+          sed -n "/^## $version$/,/^## [0-9]/p" CHANGELOG.md | sed -n '$!p' \
+          | sed 's/## /# / > RELEASE.md'
+
       - uses: ncipollo/release-action@v1
         with:
-          artifacts: "**build/linux/*"
-          bodyFile: "CHANGELOG.md"
+          artifacts: "**build/linux/roteiro"
+          # artifacts: "**build/linux/roteiro,**build/windows/roteiro.exe"
+          artifactErrorsFailBuild: true
+          bodyFile: "RELEASE.md"
           draft: true
           tag: test
