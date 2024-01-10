@@ -6,6 +6,22 @@
 ### changed
 ### removed
 
+## 0.2.1
+2024/01/09
+
+### added
+- file picker now only shows .docx files
+- develop branch
+- typing improvements
+- spellchecking
+
+### changed
+- changed final file extension to csv, still tab separated
+- code refactor
+
+### removed
+- setup to allow changing separator for final file
+
 ## 0.2.0
 2024/01/06
 
@@ -36,7 +52,7 @@
 - versioning
 - tk gui
 - flake8 linting gh actions
-- black formating gh actions
+- black formatting gh actions
 - test badge on readme
 
 ### changed

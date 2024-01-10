@@ -13,7 +13,9 @@ import docx  # type: ignore
 from __version__ import VERSION
 
 # DDDD<tab>Description[<tab>DDDD]
-ROTEIRO_LINE = r"^(?P<start>\d{4})\t(?P<description>.*?)(?:\t(?P<end>\d{4}))?$"
+ROTEIRO_TIMESTAMP_FORMAT = (
+    r"^(?P<start>\d{4})\t(?P<description>.*?)(?:\t(?P<end>\d{4}))?$"
+)
 
 
 def extract_lines(filename: str) -> list[str]:
@@ -22,10 +24,12 @@ def extract_lines(filename: str) -> list[str]:
     return lines
 
 
-def extract_timestamp(string: str) -> tuple[str, str, str | None]:
-    m = re.match(ROTEIRO_LINE, string)
+def extract_timestamp_or_none(
+    string: str,
+) -> tuple[str, str, str | None] | None:
+    m = re.match(ROTEIRO_TIMESTAMP_FORMAT, string)
     if not m:
-        raise ValueError()
+        return None
 
     matches = m.groupdict()
 
@@ -38,7 +42,7 @@ def extract_timestamp(string: str) -> tuple[str, str, str | None]:
 
 
 def format_timestamp(
-    start: str, description: str, end: str
+    start: str, description: str, end: str | None
 ) -> tuple[str, timedelta, timedelta, str]:
     name = start
 
@@ -69,52 +73,54 @@ def format_timedelta(delta: timedelta) -> str:
 
 
 def format_line(name: str, start: str, duration: str, description: str) -> str:
-    sep = ","
     sep = "\t"
+
+    time_format = "decimal"
+    range_export_format = "Subclip"
     return (
         f"{name}{sep}"
         f"{start}{sep}"
         f"{duration}{sep}"
-        f"decimal{sep}"
-        f"Subclip{sep}"
+        f"{time_format}{sep}"
+        f"{range_export_format}{sep}"
         f"{description}"
     )
 
 
-def get_markers(filename):
+def get_markers(filename: str) -> list[str]:
     lines = extract_lines(filename)
 
     values = []
     for line in lines:
-        try:
-            timestamp = extract_timestamp(line)
-        except ValueError:
-            timestamp = None
+        timestamp = extract_timestamp_or_none(line)
 
-        if timestamp:
-            start, description, end = timestamp
+        if timestamp is None:
+            continue
 
-            name, start_time, duration, description = format_timestamp(
-                start, description, end
-            )
-            formated_line = format_line(
-                name,
-                format_timedelta(start_time),
-                format_timedelta(duration),
-                description,
-            )
-            values.append(formated_line)
+        start, description, end = timestamp
+
+        name, start_time, duration, description = format_timestamp(
+            start, description, end
+        )
+        formatted_line = format_line(
+            name,
+            format_timedelta(start_time),
+            format_timedelta(duration),
+            description,
+        )
+        values.append(formatted_line)
 
     return values
 
 
-def cli(markers_strategy: Callable, version: str):
-    def _sanitize_filepath(filename_raw):
-        return filename_raw.strip().strip("'")
+TITLE = f"Roteiro Extractor - {VERSION}"
 
-    print(f"Roteiro Extractor - {version}")
 
-    filename = _sanitize_filepath(input("enter filepath for .docx: "))
+def cli(markers_strategy: Callable):
+    print(TITLE)
+
+    filename_raw = input("enter filepath for .docx: ")
+    filename = filename_raw.strip().strip("'")
 
     if not path.isfile(filename):
         print(f"'{filename}' is not a file")
@@ -128,12 +134,17 @@ def cli(markers_strategy: Callable, version: str):
     return 0
 
 
-def gui(markers_strategy: Callable, version: str):
+def gui(markers_strategy: Callable):
     bg_color = "#2E2E2E"
     fg_color = "white"
 
     def _pick_file():
-        filename = filedialog.askopenfilename()
+        filename = filedialog.askopenfilename(
+            filetypes=(("docx", "*.docx"),),
+        )
+
+        if not filename:  # user hit 'cancel' or closed dialog
+            return
 
         markers = markers_strategy(filename)
 
@@ -147,21 +158,25 @@ def gui(markers_strategy: Callable, version: str):
         root.clipboard_append(all_text)
         root.update()
 
-    def _save_tsv():
+    # for some reason adobe audition requires a tab separated value file with
+    # a .csv extension
+    def _save_csv():
         f = filedialog.asksaveasfile(
             mode="w",
-            defaultextension=".tsv",
+            defaultextension=".csv",
             initialfile="Markers",
-            filetypes=(("tsv", "*.tsv"),),
+            filetypes=(("csv", "*.csv"),),
         )
-        if f is None:  # user hit 'cancel'
+
+        if not f:  # user hit 'cancel' or closed dialog
             return
+
         text2save = text_display.get(1.0, tk.END)
         f.write(text2save)
         f.close()
 
     root = tk.Tk()
-    root.title(f"Roteiro Extractor - {version}")
+    root.title(TITLE)
     root.config(bg=bg_color)
 
     # pick button
@@ -197,8 +212,8 @@ def gui(markers_strategy: Callable, version: str):
     # save button
     save_button = tk.Button(
         root,
-        text="Save .tsv",
-        command=_save_tsv,
+        text="Save .csv",
+        command=_save_csv,
         bg=bg_color,
         fg=fg_color,
     )
@@ -215,7 +230,7 @@ def main():
     else:
         ui = gui
 
-    ui(get_markers, VERSION)
+    ui(get_markers)
 
 
 if __name__ == "__main__":
