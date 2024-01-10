@@ -100,16 +100,16 @@ def get_markers(filename):
 
         start, description, end = timestamp
 
-            name, start_time, duration, description = format_timestamp(
-                start, description, end
-            )
-            formated_line = format_line(
-                name,
-                format_timedelta(start_time),
-                format_timedelta(duration),
-                description,
-            )
-            values.append(formated_line)
+        name, start_time, duration, description = format_timestamp(
+            start, description, end
+        )
+        formatted_line = format_line(
+            name,
+            format_timedelta(start_time),
+            format_timedelta(duration),
+            description,
+        )
+        values.append(formatted_line)
 
     return values
 

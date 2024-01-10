@@ -6,6 +6,8 @@
 ### changed
 ### removed
 
+- spellchecking
+
 ### changed
 - code refactor
 
@@ -39,7 +41,7 @@
 - versioning
 - tk gui
 - flake8 linting gh actions
-- black formating gh actions
+- black formatting gh actions
 - test badge on readme
 
 ### changed
