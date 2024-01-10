@@ -24,9 +24,12 @@ def extract_lines(filename: str) -> list[str]:
     return lines
 
 
+def extract_timestamp_or_none(
+    string: str,
+) -> tuple[str, str, str | None] | None:
     m = re.match(ROTEIRO_TIMESTAMP_FORMAT, string)
     if not m:
-        raise ValueError()
+        return None
 
     matches = m.groupdict()
 
@@ -90,13 +93,12 @@ def get_markers(filename):
 
     values = []
     for line in lines:
-        try:
-            timestamp = extract_timestamp(line)
-        except ValueError:
-            timestamp = None
+        timestamp = extract_timestamp_or_none(line)
 
-        if timestamp:
-            start, description, end = timestamp
+        if timestamp is None:
+            continue
+
+        start, description, end = timestamp
 
             name, start_time, duration, description = format_timestamp(
                 start, description, end

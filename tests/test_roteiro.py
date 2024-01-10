@@ -2,7 +2,7 @@ from datetime import timedelta
 
 from src.roteiro import (
     extract_lines,
-    extract_timestamp,
+    extract_timestamp_or_none,
     format_line,
     format_timedelta,
     format_timestamp,
@@ -22,7 +22,7 @@ def test_extract_lines():
 
 
 def test_extract_timestamp():
-    assert extract_timestamp("0848	Description	1006") == (
+    assert extract_timestamp_or_none("0848	Description	1006") == (
         "0848",
         "Description",
         "1006",
@@ -30,11 +30,15 @@ def test_extract_timestamp():
 
 
 def test_extract_timestamp_optional_duration():
-    assert extract_timestamp("0848	Description") == (
+    assert extract_timestamp_or_none("0848	Description") == (
         "0848",
         "Description",
         None,
     )
+
+
+def test_extract_timestamp_no_valid_timestamp():
+    assert extract_timestamp_or_none("Not a valid timestamp") is None
 
 
 def test_format_timestamp():
