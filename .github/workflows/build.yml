@@ -72,6 +72,6 @@ jobs:
   
       - uses: ncipollo/release-action@v1
         with:
-          artifacts: "roteiro_linux,roteiro_win"
+          artifacts: "**roteiro_linux.zip,**roteiro_win.zip"
           bodyFile: "CHANGELOG.md"
           draft: true
