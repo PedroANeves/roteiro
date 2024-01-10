@@ -6,12 +6,17 @@
 ### changed
 ### removed
 
+## 0.2.1
+2024/01/09
+
 ### added
 - file picker now only shows .docx files
+- develop branch
 - typing improvements
 - spellchecking
 
 ### changed
+- changed final file extension to csv, still tab separated
 - code refactor
 
 ### removed

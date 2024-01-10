@@ -158,12 +158,14 @@ def gui(markers_strategy: Callable):
         root.clipboard_append(all_text)
         root.update()
 
-    def _save_tsv():
+    # for some reason adobe audition requires a tab separated value file with
+    # a .csv extension
+    def _save_csv():
         f = filedialog.asksaveasfile(
             mode="w",
-            defaultextension=".tsv",
+            defaultextension=".csv",
             initialfile="Markers",
-            filetypes=(("tsv", "*.tsv"),),
+            filetypes=(("csv", "*.csv"),),
         )
 
         if not f:  # user hit 'cancel' or closed dialog
@@ -210,8 +212,8 @@ def gui(markers_strategy: Callable):
     # save button
     save_button = tk.Button(
         root,
-        text="Save .tsv",
-        command=_save_tsv,
+        text="Save .csv",
+        command=_save_csv,
         bg=bg_color,
         fg=fg_color,
     )
