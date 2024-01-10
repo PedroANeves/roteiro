@@ -139,7 +139,12 @@ def gui(markers_strategy: Callable):
     fg_color = "white"
 
     def _pick_file():
-        filename = filedialog.askopenfilename()
+        filename = filedialog.askopenfilename(
+            filetypes=(("docx", "*.docx"),),
+        )
+
+        if not filename:  # user hit 'cancel' or closed dialog
+            return
 
         markers = markers_strategy(filename)
 

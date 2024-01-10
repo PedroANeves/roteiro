@@ -6,6 +6,8 @@
 ### changed
 ### removed
 
+### added
+- file picker now only shows .docx files
 - typing improvements
 - spellchecking
 
