@@ -131,6 +131,19 @@ def cli(markers_strategy: Callable):
     for marker in markers:
         print(marker)
 
+    csv_path = input("enter path where to save the csv (leave empty to skip): ")
+
+    if not csv_path:
+        return 0
+
+    if path.isfile(csv_path):
+        print(f"file {csv_path} already exists!")
+        return 1
+
+    with open(csv_path, encoding="utf-8") as f:
+        for line in markers:
+            f.write(line)
+
     return 0
 
 
@@ -166,6 +179,7 @@ def gui(markers_strategy: Callable):
             defaultextension=".csv",
             initialfile="Markers",
             filetypes=(("csv", "*.csv"),),
+            encoding="utf-8",
         )
 
         if not f:  # user hit 'cancel' or closed dialog
