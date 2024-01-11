@@ -6,6 +6,17 @@
 ### changed
 ### removed
 
+## 0.2.2
+2024/01/10
+
+### added
+- saving csv using cli interface
+
+### changed
+- fixed csv file encoding on windows
+
+### removed
+
 ## 0.2.1
 2024/01/09
 
