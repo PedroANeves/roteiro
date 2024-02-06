@@ -5,6 +5,8 @@
 ### added
 ### changed
 ### removed
+- fixed crash on windows on save file
+- attempts to fix windows encoding errors(docx module issue, wont fix)
 
 ## 0.2.2
 2024/01/10
