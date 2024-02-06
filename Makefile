@@ -64,7 +64,7 @@ build: clean test # builds executable using pyinstaller for the local machine.
 # run
 ###############################################################################
 .PHONY: run
-run: dist/roteiro # runs executable.
+run: build | dist/roteiro # runs executable.
 	dist/roteiro
 
 .PHONY: run-local

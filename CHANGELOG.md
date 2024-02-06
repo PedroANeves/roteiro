@@ -6,6 +6,8 @@
 ### changed
 ### removed
 - fixed crash on windows on save file
+- fixed makefile run recipe
+
 - attempts to fix windows encoding errors(docx module issue, wont fix)
 
 ## 0.2.2
