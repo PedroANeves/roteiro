@@ -5,9 +5,17 @@
 ### added
 ### changed
 ### removed
+
+## 0.2.3
+2024/01/10
+
+### added
+
+### changed
 - fixed crash on windows on save file
 - fixed makefile run recipe
 
+### removed
 - attempts to fix windows encoding errors(docx module issue, wont fix)
 
 ## 0.2.2
