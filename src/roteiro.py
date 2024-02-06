@@ -140,7 +140,7 @@ def cli(markers_strategy: Callable):
         print(f"file {csv_path} already exists!")
         return 1
 
-    with open(csv_path, encoding="utf-8") as f:
+    with open(csv_path, mode="w", encoding="utf-8") as f:
         for line in markers:
             f.write(line)
 
@@ -179,7 +179,6 @@ def gui(markers_strategy: Callable):
             defaultextension=".csv",
             initialfile="Markers",
             filetypes=(("csv", "*.csv"),),
-            encoding="utf-8",
         )
 
         if not f:  # user hit 'cancel' or closed dialog
