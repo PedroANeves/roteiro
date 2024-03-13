@@ -91,12 +91,12 @@ def test_cli_prints_table(capsys, monkeypatch: MonkeyPatch):
 
     cli(
         lambda _filename: [
-            "0000	Description	0100",
+            "Fake extracted line",
         ]
     )
 
     out, _ = capsys.readouterr()
-    assert out == f"Roteiro Extractor - {VERSION}\n0000	Description	0100\n"
+    assert out == f"Roteiro Extractor - {VERSION}\nFake extracted line\n"
 
 
 def test_cli_prints_table_accents(capsys, monkeypatch: MonkeyPatch):
