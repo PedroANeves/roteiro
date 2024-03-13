@@ -3,6 +3,7 @@ from __future__ import annotations
 import re
 import sys
 import tkinter as tk
+import unicodedata
 from datetime import timedelta
 from os import path
 from tkinter import filedialog
@@ -18,9 +19,17 @@ ROTEIRO_TIMESTAMP_FORMAT = (
 )
 
 
+def strip_accents(s):
+    return "".join(
+        c
+        for c in unicodedata.normalize("NFD", s)
+        if unicodedata.category(c) != "Mn"
+    )
+
+
 def extract_lines(filename: str) -> list[str]:
     document = docx.Document(filename)
-    lines = [paragraph.text for paragraph in document.paragraphs]
+    lines = [strip_accents(paragraph.text) for paragraph in document.paragraphs]
     return lines
 
 

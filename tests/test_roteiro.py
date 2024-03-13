@@ -10,7 +10,13 @@ from src.roteiro import (
     format_line,
     format_timedelta,
     format_timestamp,
+    get_markers,
+    strip_accents,
 )
+
+
+def test_strip_accents():
+    assert strip_accents("çáãé") == "caae"
 
 
 def test_extract_lines():
@@ -30,7 +36,7 @@ def test_extract_lines_accents():
         "Not a line",
         "0000	Description	0100",
         "Not a line either",
-        "0130	Description with accents çáã	0200",
+        "0130	Description with accents caa	0200",
         "0300	No Final timestamp",
         "",
         "Another Not a line after a empty line",
@@ -97,16 +103,13 @@ def test_cli_prints_table_accents(capsys, monkeypatch: MonkeyPatch):
     user_inputs = ["tests/sample_accents.docx", ""]
     monkeypatch.setattr("builtins.input", lambda _: user_inputs.pop(0))
 
-    cli(
-        lambda _filename: [
-            "0000	Description	0100",
-            "0130	Description with accents çáã	0200",
-        ]
-    )
+    cli(get_markers)
 
     out, _ = capsys.readouterr()
     assert out == (
         f"Roteiro Extractor - {VERSION}\n"
-        "0000	Description	0100\n"
-        "0130	Description with accents çáã	0200\n"
+        "0000	00:00.000	01:00.000	decimal	Subclip	Description\n"
+        "0130	01:30.000	00:30.000	"
+        "decimal	Subclip	Description with accents caa\n"
+        "0300	03:00.000	00:10.000	decimal	Subclip	No Final timestamp\n"
     )
