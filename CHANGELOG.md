@@ -6,6 +6,18 @@
 ### changed
 ### removed
 
+## 0.3.0
+2024/03/13
+
+### added
+- automatically strips accents from lines
+- debug launcher on development environment
+
+### changed
+- some tests no longer need files to run
+
+### removed
+
 ## 0.2.3
 2024/02/06
 
