@@ -86,8 +86,9 @@ def test_format_line():
 
 
 def test_cli_prints_table(capsys, monkeypatch: MonkeyPatch):
-    user_inputs = ["tests/sample.docx", ""]
+    user_inputs = ["fake.docx", ""]
     monkeypatch.setattr("builtins.input", lambda _: user_inputs.pop(0))
+    monkeypatch.setattr("os.path.isfile", lambda _: True)
 
     cli(
         lambda _filename: [
