@@ -1,5 +1,7 @@
 from datetime import timedelta
 
+import pytest
+from docx import Document  # type: ignore
 from pytest import MonkeyPatch
 
 from src.__version__ import VERSION
@@ -14,34 +16,44 @@ from src.roteiro import (
     strip_accents,
 )
 
+# false positive workaround for W0621:redefined-outer-name :
+# https://github.com/pylint-dev/pylint/issues/6531
+# pylint: disable=redefined-outer-name
 
-def test_strip_accents():
-    assert strip_accents("çáãé") == "caae"
+
+@pytest.fixture
+def sample_doc(tmp_path):
+    filename = tmp_path / "sample.docx"
+    doc = Document()
+    doc.add_paragraph("0000	Description	0100")
+    doc.add_paragraph("Not a line")
+    doc.add_paragraph(
+        "0130	A Larger Description with symbols such as … or , or ?!@#		0200"
+    )
+    doc.add_paragraph("0130	Description with accents çáã	0200")
+    doc.add_paragraph("0300	No Final timestamp")
+    doc.add_paragraph("")
+    doc.add_paragraph("Another Not a line after a empty line")
+    doc.add_paragraph("")
+    doc.save(filename)
+    return filename
 
 
-def test_extract_lines():
-    assert extract_lines("tests/sample.docx") == [
+def test_extract_lines(sample_doc):
+    assert extract_lines(sample_doc) == [
         "0000	Description	0100",
         "Not a line",
         "0130	A Larger Description with symbols such as … or , or ?!@#		0200",
-        "0300	No Final timestamp",
-        "",
-        "Another Not a line after a empty line",
-        "",
-    ]
-
-
-def test_extract_lines_accents():
-    assert extract_lines("tests/sample_accents.docx") == [
-        "Not a line",
-        "0000	Description	0100",
-        "Not a line either",
         "0130	Description with accents caa	0200",
         "0300	No Final timestamp",
         "",
         "Another Not a line after a empty line",
         "",
     ]
+
+
+def test_strip_accents():
+    assert strip_accents("çáãé") == "caae"
 
 
 def test_extract_timestamp():
@@ -86,7 +98,7 @@ def test_format_line():
 
 
 def test_cli_prints_table(capsys, monkeypatch: MonkeyPatch):
-    user_inputs = ["fake.docx", ""]
+    user_inputs = ["fake_docx", ""]
     monkeypatch.setattr("builtins.input", lambda _: user_inputs.pop(0))
     monkeypatch.setattr("os.path.isfile", lambda _: True)
 
@@ -100,8 +112,8 @@ def test_cli_prints_table(capsys, monkeypatch: MonkeyPatch):
     assert out == f"Roteiro Extractor - {VERSION}\nFake extracted line\n"
 
 
-def test_cli_prints_table_accents(capsys, monkeypatch: MonkeyPatch):
-    user_inputs = ["tests/sample_accents.docx", ""]
+def test_cli_prints_table_accents(capsys, monkeypatch: MonkeyPatch, sample_doc):
+    user_inputs = [str(sample_doc), ""]
     monkeypatch.setattr("builtins.input", lambda _: user_inputs.pop(0))
 
     cli(get_markers)
@@ -110,6 +122,9 @@ def test_cli_prints_table_accents(capsys, monkeypatch: MonkeyPatch):
     assert out == (
         f"Roteiro Extractor - {VERSION}\n"
         "0000	00:00.000	01:00.000	decimal	Subclip	Description\n"
+        "0130	01:30.000	00:30.000	"
+        "decimal	Subclip	A Larger Description with symbols such as "
+        "… or , or ?!@#	\n"
         "0130	01:30.000	00:30.000	"
         "decimal	Subclip	Description with accents caa\n"
         "0300	03:00.000	00:10.000	decimal	Subclip	No Final timestamp\n"

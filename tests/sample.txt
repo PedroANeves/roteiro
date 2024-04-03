@@ -1,7 +1,0 @@
-0000	Description	0100
-Not a line
-0130	A Larger Description with symbols such as … or , or ?!@#		0200
-0300	No Final timestamp
-
-Another Not a line after a empty line
-
