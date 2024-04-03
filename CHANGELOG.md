@@ -6,6 +6,12 @@
 ### changed
 ### removed
 
+## 0.3.1
+2024/03/26
+
+### changed
+- tests no longer require binary files
+
 ## 0.3.0
 2024/03/13
 
