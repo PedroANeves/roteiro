@@ -9,6 +9,9 @@
 ## 0.3.1
 2024/03/26
 
+### added
+- added get_markers test
+
 ### changed
 - tests no longer require binary files
 

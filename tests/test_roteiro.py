@@ -97,6 +97,22 @@ def test_format_line():
     )
 
 
+def test_get_markers(sample_doc):
+    lines = get_markers(sample_doc)
+    assert lines == [
+        "0000	00:00.000	01:00.000	decimal	Subclip	Description",
+        (
+            "0130	01:30.000	00:30.000	decimal	Subclip	"
+            "A Larger Description with symbols such as … or , or ?!@#	"
+        ),
+        (
+            "0130	01:30.000	00:30.000	decimal	Subclip	"
+            "Description with accents caa"
+        ),
+        "0300	03:00.000	00:10.000	decimal	Subclip	No Final timestamp",
+    ]
+
+
 def test_cli_prints_table(capsys, monkeypatch: MonkeyPatch):
     user_inputs = ["fake_docx", ""]
     monkeypatch.setattr("builtins.input", lambda _: user_inputs.pop(0))
