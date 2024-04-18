@@ -106,12 +106,11 @@ def get_markers(filename: str) -> list[str]:
     headers = ["Name\tStart\tDuration Time\tFormat\tType\tDescription"]
     lines = extract_lines(filename)
 
-    values = []
-    for line in lines:
-        timestamp = extract_timestamp_or_none(line)
+    timestamps_or_none = [extract_timestamp_or_none(line) for line in lines]
+    timestamps = [t for t in timestamps_or_none if t is not None]
 
-        if timestamp is None:
-            continue
+    values = []
+    for timestamp in timestamps:
 
         start, description, end = timestamp
 
