@@ -107,6 +107,7 @@ def test_format_line():
 def test_get_markers(sample_doc):
     lines = get_markers(sample_doc)
     assert lines == [
+        "Name\tStart\tDuration Time\tFormat\tType\tDescription",
         "0000	00:00.000	01:00.000	decimal	Subclip	Description",
         (
             "0130	01:30.000	00:30.000	decimal	Subclip	"
@@ -140,6 +141,7 @@ def test_cli_prints_table_accents(capsys, monkeypatch: MonkeyPatch, sample_doc):
     out, _ = capsys.readouterr()
     assert out == (
         "Roteiro Extractor\n"
+        "Name\tStart\tDuration Time\tFormat\tType\tDescription\n"
         "0000	00:00.000	01:00.000	decimal	Subclip	Description\n"
         "0130	01:30.000	00:30.000	"
         "decimal	Subclip	A Larger Description with symbols such as "

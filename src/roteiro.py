@@ -103,6 +103,7 @@ def format_line(name: str, start: str, duration: str, description: str) -> str:
 
 
 def get_markers(filename: str) -> list[str]:
+    headers = ["Name\tStart\tDuration Time\tFormat\tType\tDescription"]
     lines = extract_lines(filename)
 
     values = []
@@ -125,7 +126,7 @@ def get_markers(filename: str) -> list[str]:
         )
         values.append(formatted_line)
 
-    return values
+    return headers + values
 
 
 def cli(markers_strategy: Callable, title: str = "Roteiro Extractor"):
