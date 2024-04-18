@@ -6,6 +6,19 @@
 ### changed
 ### removed
 
+## 0.4.0
+2024/04/17
+
+### added
+- csv now has a header
+
+### changed
+- timestamps now accept space as a separator
+- paragraphs starting with a empty newline are properly recognized
+
+### changed
+- improved code and unit tests quality
+
 ## 0.3.1
 2024/03/26
 
