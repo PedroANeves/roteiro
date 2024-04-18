@@ -4,7 +4,6 @@ import pytest
 from docx import Document  # type: ignore
 from pytest import MonkeyPatch
 
-from src.__version__ import VERSION
 from src.roteiro import (
     cli,
     extract_lines,
@@ -118,14 +117,10 @@ def test_cli_prints_table(capsys, monkeypatch: MonkeyPatch):
     monkeypatch.setattr("builtins.input", lambda _: user_inputs.pop(0))
     monkeypatch.setattr("os.path.isfile", lambda _: True)
 
-    cli(
-        lambda _filename: [
-            "Fake extracted line",
-        ]
-    )
+    cli(lambda _filename: ["Fake extracted line"])
 
     out, _ = capsys.readouterr()
-    assert out == f"Roteiro Extractor - {VERSION}\nFake extracted line\n"
+    assert out == "Roteiro Extractor\nFake extracted line\n"
 
 
 def test_cli_prints_table_accents(capsys, monkeypatch: MonkeyPatch, sample_doc):
@@ -136,7 +131,7 @@ def test_cli_prints_table_accents(capsys, monkeypatch: MonkeyPatch, sample_doc):
 
     out, _ = capsys.readouterr()
     assert out == (
-        f"Roteiro Extractor - {VERSION}\n"
+        "Roteiro Extractor\n"
         "0000	00:00.000	01:00.000	decimal	Subclip	Description\n"
         "0130	01:30.000	00:30.000	"
         "decimal	Subclip	A Larger Description with symbols such as "

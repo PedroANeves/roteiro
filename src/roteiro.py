@@ -122,11 +122,8 @@ def get_markers(filename: str) -> list[str]:
     return values
 
 
-TITLE = f"Roteiro Extractor - {VERSION}"
-
-
-def cli(markers_strategy: Callable):
-    print(TITLE)
+def cli(markers_strategy: Callable, title: str = "Roteiro Extractor"):
+    print(title)
 
     filename_raw = input("enter filepath for .docx: ")
     filename = filename_raw.strip().strip("'")
@@ -156,7 +153,7 @@ def cli(markers_strategy: Callable):
     return 0
 
 
-def gui(markers_strategy: Callable):
+def gui(markers_strategy: Callable, title: str = "Roteiro Extractor"):
     bg_color = "#2E2E2E"
     fg_color = "white"
 
@@ -198,7 +195,7 @@ def gui(markers_strategy: Callable):
         f.close()
 
     root = tk.Tk()
-    root.title(TITLE)
+    root.title(title)
     root.config(bg=bg_color)
 
     # pick button
@@ -247,12 +244,14 @@ def gui(markers_strategy: Callable):
 
 
 def main():
-    if "--cli" in sys.argv:
-        ui = cli
-    else:
-        ui = gui
+    title = f"Roteiro Extractor - {VERSION}"
 
-    ui(get_markers)
+    if "--cli" in sys.argv:
+        user_interface = cli
+    else:
+        user_interface = gui
+
+    user_interface(markers_strategy=get_markers, title=title)
 
 
 if __name__ == "__main__":
