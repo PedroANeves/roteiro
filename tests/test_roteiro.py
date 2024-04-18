@@ -159,3 +159,11 @@ def test_accept_paragraphs_starting_with_newline(tmp_path):
     assert "0445\tDescription with starting newline\t0511" in extract_lines(
         filename
     )
+
+
+def test_sometimes_spaces_separates_columns_instead_of_tabs():
+    assert extract_timestamp_or_none("1611 Description with space\t1721") == (
+        "1611",
+        "Description with space",
+        "1721",
+    )

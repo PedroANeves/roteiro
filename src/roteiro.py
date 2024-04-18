@@ -13,9 +13,9 @@ import docx  # type: ignore
 
 from __version__ import VERSION
 
-# DDDD<tab>Description[<tab>DDDD]
+# DDDD(<tab>|<space>)Description[<tab>DDDD]
 ROTEIRO_TIMESTAMP_FORMAT = (
-    r"^(?P<start>\d{4})\t(?P<description>.*?)(?:\t(?P<end>\d{4}))?$"
+    r"^(?P<start>\d{4})[\t ](?P<description>.*?)(?:[\t ](?P<end>\d{4}))?$"
 )
 
 
