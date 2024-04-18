@@ -19,18 +19,24 @@ ROTEIRO_TIMESTAMP_FORMAT = (
 )
 
 
+def extract_lines(filename: str) -> list[str]:
+    document = docx.Document(filename)
+    lines = [cleanup_line(paragraph.text) for paragraph in document.paragraphs]
+    return lines
+
+
+def cleanup_line(line: str) -> str:
+    line = strip_accents(line)
+    line = line.lstrip()
+    return line
+
+
 def strip_accents(s):
     return "".join(
         c
         for c in unicodedata.normalize("NFD", s)
         if unicodedata.category(c) != "Mn"
     )
-
-
-def extract_lines(filename: str) -> list[str]:
-    document = docx.Document(filename)
-    lines = [strip_accents(paragraph.text) for paragraph in document.paragraphs]
-    return lines
 
 
 def extract_timestamp_or_none(

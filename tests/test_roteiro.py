@@ -5,6 +5,7 @@ from docx import Document  # type: ignore
 from pytest import MonkeyPatch
 
 from src.roteiro import (
+    cleanup_line,
     cli,
     extract_lines,
     extract_timestamp_or_none,
@@ -49,6 +50,13 @@ def test_extract_lines(sample_doc):
         "Another Not a line after a empty line",
         "",
     ]
+
+
+def test_cleanup_line():
+    lines = "\n0130	Description with symbols … or , or ?!@#	0200"
+    assert cleanup_line(lines) == (
+        "0130	Description with symbols … or , or ?!@#	0200"
+    )
 
 
 def test_strip_accents():
@@ -139,4 +147,15 @@ def test_cli_prints_table_accents(capsys, monkeypatch: MonkeyPatch, sample_doc):
         "0130	01:30.000	00:30.000	"
         "decimal	Subclip	Description with accents caa\n"
         "0300	03:00.000	00:10.000	decimal	Subclip	No Final timestamp\n"
+    )
+
+
+def test_accept_paragraphs_starting_with_newline(tmp_path):
+    filename = tmp_path / "with_newline.docx"
+    doc = Document()
+    doc.add_paragraph("\n0445\tDescription with starting newline\t0511")
+    doc.save(filename)
+
+    assert "0445\tDescription with starting newline\t0511" in extract_lines(
+        filename
     )
